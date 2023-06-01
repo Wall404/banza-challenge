@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, MetaData
 
-engine = create_engine("mysql+pymysql://root:mysqlpw@localhost:49153/storedb")
+engine = create_engine("mysql+pymysql://root:123@localhost:3306/banzadb")
 
 meta = MetaData()
 
