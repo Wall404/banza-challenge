@@ -1,1 +1,8 @@
 __pycache__
+.idea
+/.idea/.gitignore
+/.idea/banza-challenge.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/vcs.xml
