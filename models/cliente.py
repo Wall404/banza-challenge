@@ -2,7 +2,7 @@ from sqlalchemy import Table, Column
 from sqlalchemy.sql.sqltypes import Integer, String
 from config.db import meta, engine
 
-clientes = Table("cliente", meta, 
+clientes = Table("clientes", meta,
                 Column("id", Integer, primary_key=True, autoincrement=True),
                 Column("nombre", String(255))
                 )

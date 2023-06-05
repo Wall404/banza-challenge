@@ -1,10 +1,9 @@
 from typing import List
 from fastapi import APIRouter
-from sqlalchemy import select
+from config.db import conn
 from schemas.cliente import Cliente
 from models.cliente import clientes
-from config.db import conn
-# from starlette.status import HTTP_200, HTTP_201, HTTP_204_NO_CONTENT, HTTP_400, HTTP_404
+from sqlalchemy import select, func
 
 cliente = APIRouter()
 
@@ -15,14 +14,12 @@ def get_clientes():
     return lista_clientes
 
 
-@cliente.post("/clientes", tags=["clientes"])
+@cliente.post("/clientes", tags=["clientes"], response_model=Cliente)
 def create_cliente(cliente: Cliente):
-    new_cliente = {
-        # "id": cliente.id,
-        "nombre": cliente.nombre}
+    new_cliente = {"nombre": cliente.nombre}
     result = conn.execute(clientes.insert().values(new_cliente))
-    return conn.execute(clientes.select().where(
-        clientes.c.id == result.lastrowid)).first()
+    conn.commit()
+    return conn.execute(clientes.select().where(clientes.c.id == result.lastrowid)).first()
 
 
 @cliente.get("/clientes/{id}", tags=["clientes"], response_model=Cliente)
@@ -33,9 +30,5 @@ def get_cliente(id: int):
 @cliente.delete("/clientes/{id}", tags=["clientes"])
 def delete_cliente(id: int):
     result = conn.execute(clientes.delete().where(clientes.c.id == id))
+    conn.commit()
     return conn.execute(clientes.select().where(clientes.c.id == id)).first()
-
-
-# @cliente.get("/clientes")
-# def helloworld():
-#     return "hello world"
