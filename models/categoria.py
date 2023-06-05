@@ -1,7 +1,12 @@
-from sqlalchemy import Table, Column
-from sqlalchemy.sql.sqltypes import Integer, String
-from config.db import meta, engine
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+from config.db import Base
 
-categoria = Table("categorias", meta, Column("id", Integer, primary_key=True, autoincrement=True), Column("nombre", String(255)))
+class Categoria(Base):
+    __tablename__ = "categorias"
 
-meta.create_all(engine)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(255))
+
+    clientes = relationship("Cliente", secondary="cliente_categoria")
+

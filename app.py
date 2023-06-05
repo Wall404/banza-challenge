@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from config.openapi import tags_metadata
-from routes.cliente import cliente
+from routes.cliente import cliente_router
+from routes.movimientos import movimiento_router
 
 app = FastAPI(
     title="Banza-Challenge API",
@@ -8,4 +9,5 @@ app = FastAPI(
     version="0.0.1",
     openapi_tags=tags_metadata,)
 
-app.include_router(cliente)
+app.include_router(cliente_router)
+app.include_router(movimiento_router)

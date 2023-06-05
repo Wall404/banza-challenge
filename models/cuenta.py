@@ -1,7 +1,13 @@
-from sqlalchemy import Table, Column
-from sqlalchemy.sql.sqltypes import Integer, String
-from config.db import meta, engine
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
+from config.db import Base
 
-cuenta = Table("cuentas", meta, Column("id", Integer, primary_key=True, autoincrement=True), Column("nombre", String(255)))
+class Cuenta(Base):
+    __tablename__ = "cuentas"
 
-meta.create_all(engine)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(255))
+    cliente_id = Column(Integer, ForeignKey("clientes.id"))
+
+    cliente = relationship("Cliente", back_populates="cuentas")
+    movimientos = relationship("Movimiento", back_populates="cuenta")

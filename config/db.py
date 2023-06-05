@@ -1,7 +1,23 @@
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine("mysql+pymysql://root:123@localhost:3306/banzadb")
+Base = declarative_base()
 
-meta = MetaData()
+# Configuración de la conexión a la base de datos
+DATABASE_URL = "mysql+pymysql://root:123@localhost:3306/banzadb"
 
-conn = engine.connect()
+# Crear el motor de la base de datos
+engine = create_engine(DATABASE_URL)
+
+# Crear la fábrica de sesiones
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Función para obtener una sesión de base de datos
+def get_db():
+    try:
+        db = SessionLocal()
+        yield db
+    finally:
+        db.close()
+

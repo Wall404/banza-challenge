@@ -8,4 +8,8 @@ class Movimiento(BaseModel):
     nombre: str
     tipo: Literal['ingreso', 'egreso']
     importe: str
-    fecha: datetime
+    fecha: datetime.datetime
+
+    class Config:
+        orm_mode = True
+

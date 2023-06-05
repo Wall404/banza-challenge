@@ -1,12 +1,18 @@
-from sqlalchemy import Table, Column
-from sqlalchemy.sql.sqltypes import Integer, String, DECIMAL, DateTime
-from config.db import meta, engine
+import datetime
+from sqlalchemy import Column, DateTime, Enum, Float, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
-cuenta = Table("movimientos", meta,
-               Column("id", Integer, primary_key=True, autoincrement=True),
-               Column("id_cuenta", Integer),
-               Column("tipo", String(255)),
-               Column("importe", DECIMAL),
-               Column("fecha", DateTime))
+from config.db import Base
 
-meta.create_all(engine)
+class Movimiento(Base):
+    __tablename__ = "movimientos"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    id_cuenta = Column(Integer, ForeignKey("cuentas.id"))
+    nombre = Column(String(255))
+    tipo = Column(Enum("ingreso", "egreso"))
+    importe = Column(Float)
+    fecha = Column(DateTime, default=datetime.datetime.utcnow)
+
+    cuenta = relationship("Cuenta", back_populates="movimientos")
+
